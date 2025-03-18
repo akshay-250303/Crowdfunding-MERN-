@@ -1,0 +1,38 @@
+#register{
+    margin-block: 20px;
+    width: 100%;
+    
+}
+#register1{
+    margin-block: 20px;
+display: grid;
+place-items: center;
+min-height: 480px;
+    
+}
+#cardReg{
+    border-radius: 15px;
+    border: 2px solid #FFB433;
+    padding: 10px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 20px #80CBC4;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+#user{
+    height: 300px;
+    width: 300px;
+    border-radius: 50%;
+    object-fit: cover;
+    
+}
+#mycampaign{
+    display: grid;
+    grid-template-columns: auto;
+    gap: 10px;
+    place-items: center;
+}

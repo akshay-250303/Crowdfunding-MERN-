@@ -1,0 +1,74 @@
+#nav{
+    display: flex;
+    justify-content: space-between;
+    padding-block: 10px;
+    background-color: #FFB433;
+}
+#navlink{
+    font-weight:bold;
+    font-size: large;
+    padding-inline: 30px;
+}
+#aboutus{
+    text-align: center;
+    margin-block: 30px;
+    color: #80CBC4;
+    text-decoration: underline;
+}
+#campaignHead{
+    text-align: center;
+    margin-block: 30px;
+    color: #80CBC4;
+    text-decoration: underline;
+} 
+#contactHead{
+    text-align: center;
+    margin-block: 30px;
+    color: #80CBC4;
+    text-decoration: underline;
+}
+ 
+::placeholder{
+    font-style: italic;
+}
+#aboutimg{
+border-radius: 15px;
+filter: drop-shadow(0 0 20px #80CBC4);
+}
+#campaing{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 10px;
+    place-items: center;
+}
+
+#mycampaign5{
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 10px;
+    place-items: center;
+}
+#cotact{
+    border:1px solid #80CBC4;
+    filter: drop-shadow(0px 0px 10px #B4EBE6);
+}
+#footer{
+    background-color: #B4EBE6;
+}
+#input{
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+#icon{
+    display: flex;
+    justify-content: space-around;
+    margin-block: 10px;
+}
+#flexfooter{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-block: 10px;
+}
