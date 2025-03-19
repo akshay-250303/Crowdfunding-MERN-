@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState} from 'react'
 import { Link,useNavigate } from 'react-router-dom'
 import logo from '../assets/Main/mainLogo.png'
 import footer from '../assets/Main/footerLogo1.png'
@@ -25,6 +25,26 @@ const Addcampaign = () => {
       
       
         });
+
+const [modalMessage, setModalMessage] = useState('');
+const [showModal, setShowModal] = useState(false);
+const [errors, setErrors] = useState({});
+
+const validate = () => {
+  let tempErrors = {};
+  if (!formData.title.trim()) tempErrors.title = "Title is required";
+  if (!formData.description.trim()) tempErrors.description = "Description is required";
+  if (!formData.date) tempErrors.date = "Target Date is required";
+  if (!formData.amount || formData.amount <= 0) tempErrors.amount = "Enter a valid amount";
+  if (!formData.accountName.trim()) tempErrors.accountName = "Account holder name is required";
+  if (!formData.accountNumber || formData.accountNumber.length < 9) tempErrors.accountNumber = "Enter a valid account number";
+  if (!formData.ifsc.match(/^[A-Z]{4}0[A-Z0-9]{6}$/)) tempErrors.ifsc = "Enter a valid IFSC code";
+  if (!formData.image) tempErrors.image = "Please upload a campaign image";
+  setErrors(tempErrors);
+  return Object.keys(tempErrors).length === 0;
+};
+
+
         const handleDocumentChange = (event) => {
           if (event.target.files.length > 0) {
               setFormData({ ...formData, image: event.target.files[0] });
@@ -39,34 +59,25 @@ const Addcampaign = () => {
       
       const handleSubmit = async (e) => {
         e.preventDefault();
-      
+        if (!validate()) return;
+    
         const formDataToSend = new FormData();
-        formDataToSend.append("userid", formData.userid);
-        formDataToSend.append("title", formData.title);
-        formDataToSend.append("description", formData.description);
-        formDataToSend.append("date", formData.date);
-        formDataToSend.append("amount", formData.amount);
-        formDataToSend.append("collected","0");
-        formDataToSend.append("image", formData.image);
-        formDataToSend.append("accountName", formData.accountName);
-        formDataToSend.append("accountNumber", formData.accountNumber);
-        formDataToSend.append("ifsc", formData.ifsc);
-        formDataToSend.append("status", "processing");
-
-      
+        Object.keys(formData).forEach(key => {
+          formDataToSend.append(key, formData[key]);
+        });
+    
         try {
-            const response = await axios.post("http://localhost:5000/api/users/addcampaign", formDataToSend, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
-      
-            if (response.status === 200) {
-                alert("Wait For Admin's Approval");
-                navigate('/myCampaign')
-            }
+          const response = await axios.post("http://localhost:5000/api/users/addcampaign", formDataToSend, {
+            headers: { "Content-Type": "multipart/form-data" }
+          });
+    
+          if (response.status === 200) {
+            setModalMessage("Waiting for Admin's Approval");
+            setShowModal(true);
+          }
         } catch (error) {
-            alert(error.message || "An error occurred");
+          setModalMessage(error.message || "An error occurred");
+          setShowModal(true);
         }
       };
   return (
@@ -116,24 +127,31 @@ const Addcampaign = () => {
                         <i>Title: </i><span className="text-danger">*</span>
                         </label>
                         <input type="text" placeholder="Enter Campaign Title" name='title' value={formData.title} onChange={handlChange} className="form-control" required />
+                        {errors.title && <small className='text-danger'>{errors.title}</small>}
                         <br />
       
                         <label htmlFor="" style={{ color: "#80CBC4" }}>
                         <i> Description:</i> <span className="text-danger">*</span>
                         </label>
                         <textarea name="description" value={formData.description} onChange={handlChange} id="" placeholder='Enter Campaign Description' class="form-control" required></textarea>
+                        {errors.description && <small className='text-danger'>{errors.description}</small>}
+
                         <br />
       
                         <label htmlFor="" style={{ color: "#80CBC4" }}>
                         <i> Target Date:</i> <span className="text-danger">*</span>
                         </label>
                         <input type="date" placeholder="Enter target Date" className="form-control" name='date' value={formData.date} onChange={handlChange} required />
+                        {errors.date && <small className='text-danger'>{errors.date}</small>}
+
                         <br />
       
                         <label htmlFor="" style={{ color: "#80CBC4" }}>
                         <i>  Target Amount:</i> <span className="text-danger">*</span>
                         </label>
                         <input type="number" name='amount' value={formData.amount} onChange={handlChange} placeholder="Enter Target Amount" className="form-control" required />
+                        {errors.amount && <small className='text-danger'>{errors.amount}</small>}
+
 
                         <br />
       
@@ -141,6 +159,8 @@ const Addcampaign = () => {
                         <i>Campaign Related Image:</i> <span className="text-danger">*</span>
                         </label>
                         <input type="file" id="legalDoc" name='image'onChange={handleDocumentChange} className="form-control" required />
+                        {errors.image && <small className='text-danger'>{errors.image}</small>}
+
 
                       </div>
                     </div>
@@ -151,18 +171,24 @@ const Addcampaign = () => {
                       <i>  Account Holder Name:</i> <span className="text-danger">*</span>
                         </label>
                         <input type="text" placeholder="Enter Account Holder Name" name='accountName'value={formData.accountName} onChange={handlChange} className="form-control" required />
+                        {errors.accountName && <small className='text-danger'>{errors.accountName}</small>}
+
                         <br />
       
                         <label htmlFor="" style={{ color: "#80CBC4" }}>
                         <i> Account Number:</i> <span className="text-danger">*</span>
                         </label>
                         <input type="number" name="accountNumber"value={formData.accountNumber} onChange={handlChange} id="" placeholder="Enter Account Number" required class="form-control"/>
+                        {errors.accountNumber && <small className='text-danger'>{errors.accountNumber}</small>}
+
                         <br />
       
                         <label htmlFor="" style={{ color: "#80CBC4" }}>
                         <i> IFSC Code: </i><span className="text-danger">*</span>
                         </label>
                         <input type="text" placeholder="Enter IFSC Code" name='ifsc'value={formData.ifsc} onChange={handlChange} className="form-control" required />
+                        {errors.ifsc && <small className='text-danger'>{errors.ifsc}</small>}
+
                         <br />
                       </div>
 
@@ -177,8 +203,28 @@ const Addcampaign = () => {
               </div>
             </div>
 
+{/* Bootstrap Modal */}
+<div className={`modal fade ${showModal ? 'show d-block' : ''}`} tabIndex="-1" style={{ background: "rgba(0,0,0,0.5)" }}>
+  <div className="modal-dialog">
+    <div className="modal-content">
+      <div className="modal-header">
+        <h5 className="modal-title">Campaign Status</h5>
+        <button type="button" className="btn-close" onClick={() => { setShowModal(false); navigate('/addcampaign'); }}></button>
+      </div>
+      <div className="modal-body">
+        <p>{modalMessage}</p>
+      </div>
+      <div className="modal-footer">
+        <button className="btn btn-secondary" onClick={() => { setShowModal(false); navigate('/addcampaign'); }}>Close</button>
+        <button className="btn btn-primary" onClick={() => { setShowModal(false); navigate('/myCampaign'); }}>OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
       {/* footer  */}
-      <div id='footer'>
+      <div id='footer'className="container-fluid">
         <div class='row'>
           <div class='col-lg-3'> <center>
           <img src={footer} alt="" height={150} style={{marginTop:'10px'}}/>
@@ -231,3 +277,5 @@ const Addcampaign = () => {
 }
 
 export default Addcampaign
+
+

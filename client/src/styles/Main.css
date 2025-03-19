@@ -72,3 +72,122 @@ filter: drop-shadow(0 0 20px #80CBC4);
     gap: 10px;
     margin-block: 10px;
 }
+.campaign-card {
+    margin: 20px 0;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .campaign-card:hover {
+    transform: scale(1.02);
+  }
+  
+  .card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+  }
+  
+  .campaign-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  .card-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .campaign-details h5 {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  
+  .status-badge {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+  }
+  
+  .status-badge.approved {
+    background-color: #c8e6c9;
+    color: #388e3c;
+  }
+  
+  .status-badge.rejected {
+    background-color: #ffcdd2;
+    color: #d32f2f;
+  }
+  
+  .status-badge.pending {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 15px;
+  }
+  
+  .approve-btn, .reject-btn, .delete-btn {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .approve-btn {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .reject-btn {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .delete-btn {
+    background-color: #ff9800;
+    color: white;
+  }
+  
+  .approve-btn:hover {
+    background-color: #388E3C;
+  }
+  
+  .reject-btn:hover {
+    background-color: #D32F2F;
+  }
+  
+  .delete-btn:hover {
+    background-color: #E65100;
+  }
+  .text-info {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2196F3;
+  }
+  .card {
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .card:hover {
+    transform: scale(1.02);
+  }
+    
+  

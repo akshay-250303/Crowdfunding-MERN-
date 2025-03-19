@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useRef} from 'react'
+import React,{useState} from 'react'
 import '../styles/Login.css'
 import logo from '../assets/reg_login/mainLogo.png'
 import { Link,useNavigate } from 'react-router-dom';
@@ -13,6 +13,10 @@ const [formData,setFormData] = useState({
   email:'',
   password:''
 });
+
+const [modalMessage, setModalMessage] = useState('');
+const [showModal, setShowModal] = useState(false);
+
 
 
       const Navigate = useNavigate();
@@ -36,21 +40,25 @@ const [formData,setFormData] = useState({
     
             switch (data.userStatus) {
                 case "processing":
-                    alert("Waiting for Admin's Approval");
+                  setModalMessage("Waiting for Admin's Approval");
+                  setShowModal(true);
                     break;
                 case "rejected":
-                    alert("Admin Rejected Your Account");
+                  setModalMessage("Admin Rejected Your Account");
+                  setShowModal(true);
                     break;
                 case "approved":
                     Navigate(data.userType === "user" ? "/userhome" : "/admin");
                     break;
                 default:
-                    alert("Unexpected user status");
-            }
+                  setModalMessage("Unexpected user status");
+                  setShowModal(true);
+                    }
         } catch (error) {
             console.error("Login error:", error);
-            alert(error.response?.data?.message || "An error occurred");
-        }
+            setModalMessage(error.response?.data?.message || "An error occurred");
+            setShowModal(true);
+              }
     };
       
 
@@ -95,8 +103,26 @@ const [formData,setFormData] = useState({
     </div>
 </div>
 
+      {/* Bootstrap Modal */}
+      <div className={`modal fade ${showModal ? 'show d-block' : ''}`} tabIndex="-1" style={{ background: "rgba(0,0,0,0.5)" }}>
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Login Status</h5>
+              <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
+            </div>
+            <div className="modal-body">
+              <p>{modalMessage}</p>
+            </div>
+            <div className="modal-footer">
+              <button className="btn btn-secondary" onClick={() => setShowModal(false)}>Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
 {/* footer  */}
-<div id='footer'>
+<div id='footer' className="container-fluid">
   <div class='row'>
     <div class='col-lg-3'> <center>
     <img src={footer} alt="" height={150} style={{marginTop:'10px'}}/>
@@ -149,3 +175,4 @@ const [formData,setFormData] = useState({
 }
 
 export default Login
+

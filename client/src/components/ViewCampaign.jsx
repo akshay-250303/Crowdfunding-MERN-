@@ -14,6 +14,9 @@ const ViewCampaign = () => {
   console.log("Extracted campaignId:", campaignId); // Debugging
   const userId = sessionStorage.getItem('userId');
     const [campaign, setCampaign] = useState(null);
+const [modalMessage, setModalMessage] = useState('');
+const [showModal, setShowModal] = useState(false);
+const [errors, setErrors] = useState({});
 
 
 
@@ -43,7 +46,18 @@ const ViewCampaign = () => {
     return <h2 className="text-center">Loading campaign details...</h2>;
   }
   
-
+  const validateForm = () => {
+    let errors = {};
+    if (!formData.donorAccountName.trim()) errors.donorAccountName = "Account holder name is required";
+    if (!formData.donorAccountNumber) errors.donorAccountNumber = "Account number is required";
+    else if (formData.donorAccountNumber.length < 9) errors.donorAccountNumber = "Account number must be at least 9 digits";
+    if (!formData.donorAccountifsc.trim()) errors.donorAccountifsc = "IFSC code is required";
+    else if (!/^[A-Z]{4}0[A-Z0-9]{6}$/i.test(formData.donorAccountifsc)) errors.donorAccountifsc = "Invalid IFSC code format";
+    if (!formData.donorAmount) errors.donorAmount = "Donation amount is required";
+    else if (formData.donorAmount <= 0) errors.donorAmount = "Amount must be greater than zero";
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
 const handlChange = (e) => {
   setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -53,32 +67,19 @@ const handlChange = (e) => {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-
-  const payload = {
-    userId: formData.userId,
-    campaignId: formData.campaignId,
-    donorAccountName: formData.donorAccountName,
-    donorAccountNumber: formData.donorAccountNumber,
-    donorAccountifsc: formData.donorAccountifsc,
-    donorAmount: formData.donorAmount,
-  };
-
-  console.log("Submitting payload:", payload); // ✅ Debugging frontend data
+  if (!validateForm()) return;
 
   try {
     const response = await fetch("http://localhost:5000/api/users/transactions", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json", // ✅ Ensure JSON is sent
-      },
-      body: JSON.stringify(payload), // ✅ Convert to JSON
-
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
     });
 
     const data = await response.json();
     console.log("Server Response:", data);
-    alert('Transaction Successfull!');
-    navigate('/userhome')
+    setModalMessage("Transaction Successful!");
+    setShowModal(true);
   } catch (error) {
     console.error("Error submitting form:", error);
   }
@@ -151,15 +152,23 @@ const handleSubmit = async (e) => {
                 <form onSubmit={handleSubmit}>
                 <label style={{ color: '#80CBC4' }}>Account Holder Name:</label>
                 <input type="text" name='donorAccountName' value={formData.donorAccountName} onChange={handlChange} placeholder="Enter Account holder name" className="form-control" required />
+                {errors.donorAccountName && <small className="text-danger">{errors.donorAccountName}</small>}
+
                 <br />
                 <label style={{ color: '#80CBC4' }}>Account Number:</label>
                 <input type="number" name='donorAccountNumber' value={formData.donorAccountNumber} onChange={handlChange} placeholder="Enter Account number" className="form-control" required />
+                {errors.donorAccountNumber && <small className="text-danger">{errors.donorAccountNumber}</small>}
+
                 <br />
                 <label style={{ color: '#80CBC4' }}>IFSC Code:</label>
                 <input type="text" name='donorAccountifsc' value={formData.donorAccountifsc} onChange={handlChange} placeholder="Enter IFSC Code" className="form-control" required />
+                {errors.donorAccountifsc && <small className="text-danger">{errors.donorAccountifsc}</small>}
+
                 <br />
                 <label style={{ color: '#80CBC4' }}>Amount to Donate:</label>
                 <input type="number" name='donorAmount' value={formData.donorAmount} onChange={handlChange} placeholder="Enter Amount to Donate" className="form-control" required/>
+                {errors.donorAmount && <small className="text-danger">{errors.donorAmount}</small>}
+
                 <br />
                 <button className="btn btn-lg" type='submit' style={{ color: 'white', backgroundColor: '#FFB433', width: '100%' }}>
                   Donate Now
@@ -170,9 +179,28 @@ const handleSubmit = async (e) => {
           </div>
         </div>
       </div>
+      {/* Bootstrap Modal */}
+<div className={`modal fade ${showModal ? 'show d-block' : ''}`} tabIndex="-1" style={{ background: "rgba(0,0,0,0.5)" }}>
+  <div className="modal-dialog">
+    <div className="modal-content">
+      <div className="modal-header">
+        <h5 className="modal-title">Transaction Status</h5>
+        <button type="button" className="btn-close" onClick={() => { setShowModal(false); navigate('/addcampaign'); }}></button>
+      </div>
+      <div className="modal-body">
+        <p>{modalMessage}</p>
+      </div>
+      <div className="modal-footer">
+        <button className="btn btn-secondary" onClick={() => { setShowModal(false);}}>Close</button>
+        <button className="btn btn-primary" onClick={() => { setShowModal(false); navigate('/userhome'); }}>OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
       {/* Footer */}
-      <div id="footer">
+      <div id="footer"className="container-fluid">
         <div className="row">
           <div className="col-lg-3 text-center">
             <img src={footer} alt="footer" height={150} style={{ marginTop: '10px' }} />

@@ -230,7 +230,7 @@ const UserHome = () => {
 
 </div>
 {/* footer  */}
-<div id='footer'>
+<div id='footer'className="container-fluid">
   <div class='row'>
     <div class='col-lg-3'> <center>
     <img src={footer} alt="" height={150} style={{marginTop:'10px'}}/>

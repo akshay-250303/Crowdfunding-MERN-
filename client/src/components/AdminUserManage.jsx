@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../styles/useRegister.css';
 
-const AdminUsermanage = () => {
+const AdminUserManage = () => {
   const [users, setUsers] = useState([]);
+  const [modalMessage, setModalMessage] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,8 +28,9 @@ const AdminUsermanage = () => {
       });
 
       if (response.status === 200) {
-        alert(`User status updated to ${newStatus}`);
-        
+        setModalMessage(`User status updated to ${newStatus}`);
+        setShowModal(true);
+
         // Update user state locally to reflect the change without reloading
         setUsers((prevUsers) =>
           prevUsers.map((user) =>
@@ -35,60 +38,79 @@ const AdminUsermanage = () => {
           )
         );
       } else {
-        alert("Failed to update user status");
+        setModalMessage("Failed to update user status");
+        setShowModal(true);
       }
     } catch (err) {
       console.error("Error updating user status:", err.message);
-      alert("An error occurred while updating user status");
+      setModalMessage("An error occurred while updating user status");
+      setShowModal(true);
     }
   };
 
   return (
-    <div>
-      <div id='campaignHead'>
-        <h1><i>Manage Users</i></h1>
-      </div>
-      <div className="container" id='campaing'>
+    <div className="container mt-4">
+      <h1 className="text-center text-primary"><i>Manage Users</i></h1>
+      <div className="row">
         {users.map((user) => (
-          <div key={user._id}>
-            <div className="card mb-3" style={{ border: '1px solid #80CBC4' }}>
-              <div className="row g-0">
-                <div className="col-md-4">
-                  <img src={`http://localhost:5000/${user.document}`} className="img-fluid rounded-start h-100" alt="Legal document" />
-                </div>
-                <div className="col-md-8">
-                  <div className="card-body">
-                    <h1 className="card-title"><i>{user.name}</i></h1>
-                    <h5 className="card-title"><i>Email: {user.email}</i></h5>
-                    <h5 className="card-title"><i>Contact: {user.contact}</i></h5>
-                    <h5 className={`card-title ${user.status === "approved" ? "text-success" : user.status === "rejected" ? "text-danger" : "text-warning"}`}>
-  Status: {user.status}
-</h5>
-                    <div style={{ display: 'flex', justifyContent: "center", gap: "10px" }}>
-                      <button 
-                        className="btn btn-outline-success" 
-                        onClick={() => updateUserStatus(user._id, "approved")}
-                        disabled={user.status === "approved"}
-                      >
-                       <i>Approve</i> 
-                      </button>
-                      <button 
-                        className="btn btn-outline-danger" 
-                        onClick={() => updateUserStatus(user._id, "rejected")}
-                        disabled={user.status === "rejected"}
-                      >
-                         <i>Reject</i>
-                      </button>
-                    </div>
-                  </div>
+          <div key={user._id} className="col-md-6 col-lg-4 mb-4">
+            <div className="card shadow-sm rounded-lg border-0">
+              <div className="card-header bg-primary text-white text-center">
+                <h4 className="mb-0">{user.name}</h4>
+              </div>
+              <img
+                src={`http://localhost:5000/${user.document}`}
+                className="card-img-top"
+                alt="Legal document"
+                style={{ maxHeight: "200px", objectFit: "cover" }}
+              />
+              <div className="card-body">
+                <p><strong>Email:</strong> {user.email}</p>
+                <p><strong>Contact:</strong> {user.contact}</p>
+                <h5 className={`badge ${user.status === "approved" ? "bg-success" : user.status === "rejected" ? "bg-danger" : "bg-warning"}`}>
+                  {user.status}
+                </h5>
+                <div className="mt-3 d-flex justify-content-center gap-2">
+                  <button
+                    className="btn btn-outline-success"
+                    onClick={() => updateUserStatus(user._id, "approved")}
+                    disabled={user.status === "approved"}
+                  >
+                    <i>Approve</i>
+                  </button>
+                  <button
+                    className="btn btn-outline-danger"
+                    onClick={() => updateUserStatus(user._id, "rejected")}
+                    disabled={user.status === "rejected"}
+                  >
+                    <i>Reject</i>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         ))}
       </div>
+
+      {/* Bootstrap Modal */}
+      <div className={`modal fade ${showModal ? 'show d-block' : ''}`} tabIndex="-1" style={{ background: "rgba(0,0,0,0.5)" }}>
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">User Status Update</h5>
+              <button type="button" className="btn-close" onClick={() => { setShowModal(false); }}></button>
+            </div>
+            <div className="modal-body">
+              <p>{modalMessage}</p>
+            </div>
+            <div className="modal-footer">
+              <button className="btn btn-primary" onClick={() => { setShowModal(false); }}>OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default AdminUsermanage;
+export default AdminUserManage;

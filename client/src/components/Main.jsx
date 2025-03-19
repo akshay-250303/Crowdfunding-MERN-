@@ -198,54 +198,62 @@ const Mains = () => {
 
 </div>
 {/* footer  */}
-<div id='footer'>
-  <div class='row'>
-    <div class='col-lg-3'> <center>
-    <img src={footer} alt="" height={150} style={{marginTop:'10px'}}/>
-    <hr />
-    <div id='icon'>
-      <div><FaFacebook style={{color:'black',width:'30px',height:'30px'}}/></div><div><FaSquareXTwitter style={{color:'black',width:'30px',height:'30px'}} /></div><div><FaInstagramSquare style={{color:'black',width:'30px',height:'30px'}} /></div><div><FaLinkedin style={{color:'black',width:'30px',height:'30px'}} /></div>
+<div id="footer" className="container-fluid">
+  <div className="row">
+    <div className="col-lg-3 text-center">
+      <img src={footer} alt="" height={150} style={{ marginTop: '10px' }} />
+      <hr />
+      <div id="icon" className="d-flex justify-content-center gap-3">
+        <FaFacebook style={{ color: 'black', width: '30px', height: '30px' }} />
+        <FaSquareXTwitter style={{ color: 'black', width: '30px', height: '30px' }} />
+        <FaInstagramSquare style={{ color: 'black', width: '30px', height: '30px' }} />
+        <FaLinkedin style={{ color: 'black', width: '30px', height: '30px' }} />
+      </div>
     </div>
-    </center>
-      
-    </div>
-    <div class='col-lg-2' id='flexfooter'>
+
+    <div className="col-lg-2 col-md-4 col-sm-6" id="flexfooter">
       <h3><i>Causes</i></h3>
-        <div><i>Medical crowdfunding</i></div>
-        <div><i>Cancer crowdfunding</i></div>
-        <div><i>Transplant crowdfunding</i></div>
-        <div><i>Education crowdfunding</i></div>
-        <div><i>Sports crowdfunding</i></div>
-      </div>
-    <div class='col-lg-2' id='flexfooter'>
-            <h3><i>How it works?</i></h3>
-      
-        <div><i>Fundraising for NGOs</i></div>
-        <div><i>Sponser a Child</i></div>
-        <div><i>Fundraising Tips</i></div>
-        <div><i>What is crowdfunding?</i></div>
-        <div><i>Corporates</i></div>
-      </div>
-    <div class='col-lg-2' id='flexfooter'>
-           <h3><i>About Us</i></h3>
-        <div><i>Team Idea Bank</i></div>
-        <div><i>In The News</i></div>
-        <div><i>Web Stories</i></div>
-        <div><i>Careers</i></div>
-        <div><i>Success Stories</i></div>
-      </div>
-    <div class='col-lg-3' id='flexfooter'>
-            <h3><i>Support</i></h3>
-        <div><i>Medical finance</i></div>
-        <div><i>FAQs & Help Center</i></div>
-        <div><i>Fundraiser Video</i></div>
-        <div><i>Trust & Safety</i></div>
-        <div><i>Plans & Pricing</i></div>
-      </div>
+      <div><i>Medical crowdfunding</i></div>
+      <div><i>Cancer crowdfunding</i></div>
+      <div><i>Transplant crowdfunding</i></div>
+      <div><i>Education crowdfunding</i></div>
+      <div><i>Sports crowdfunding</i></div>
+    </div>
+
+    <div className="col-lg-2 col-md-4 col-sm-6" id="flexfooter">
+      <h3><i>How it works?</i></h3>
+      <div><i>Fundraising for NGOs</i></div>
+      <div><i>Sponsor a Child</i></div>
+      <div><i>Fundraising Tips</i></div>
+      <div><i>What is crowdfunding?</i></div>
+      <div><i>Corporates</i></div>
+    </div>
+
+    <div className="col-lg-2 col-md-4 col-sm-6" id="flexfooter">
+      <h3><i>About Us</i></h3>
+      <div><i>Team Idea Bank</i></div>
+      <div><i>In The News</i></div>
+      <div><i>Web Stories</i></div>
+      <div><i>Careers</i></div>
+      <div><i>Success Stories</i></div>
+    </div>
+
+    <div className="col-lg-3 col-md-4 col-sm-6" id="flexfooter">
+      <h3><i>Support</i></h3>
+      <div><i>Medical finance</i></div>
+      <div><i>FAQs & Help Center</i></div>
+      <div><i>Fundraiser Video</i></div>
+      <div><i>Trust & Safety</i></div>
+      <div><i>Plans & Pricing</i></div>
+    </div>
   </div>
+
   <hr />
-  <div class='text-center pb-3'><i>&copy;ideabankcrowdfunding2025</i></div>
+  <div className="text-center pb-3">
+    <i>&copy; ideabankcrowdfunding2025</i>
+  </div>
 </div>
+
 
     </div>
   )
